@@ -1,5 +1,7 @@
 package com.ankit.controller;
 import java.util.*;
+
+import com.ankit.dto.PatientDTO;
 import com.ankit.entity.Patient;
 import com.ankit.service.PatientService;
 import jakarta.validation.Valid;
@@ -27,6 +29,11 @@ public class PatientController {
     @GetMapping("/patients/{id}")
     public Patient getPatientById(@PathVariable int id){
         return service.getPatientById(id);
+    }
+
+    @GetMapping("/patients/dto/{id}")
+    public PatientDTO getPatientDTO(@PathVariable int id){
+        return service.getPatientDTOById(id);
     }
 
     @PutMapping("/patients/{id}")

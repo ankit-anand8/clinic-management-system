@@ -3,6 +3,11 @@ package com.ankit.service;
 import com.ankit.entity.Appointment;
 import com.ankit.repository.AppointmentRepository;
 import org.springframework.stereotype.Service;
+import com.ankit.dto.AppointmentDTO;
+import com.ankit.entity.Doctor;
+import com.ankit.entity.Patient;
+import com.ankit.repository.DoctorRepository;
+import com.ankit.repository.PatientRepository;
 
 import java.util.List;
 
@@ -10,8 +15,14 @@ import java.util.List;
 public class AppointmentService {
     private AppointmentRepository repo;
 
-    public AppointmentService(AppointmentRepository repo){
+    private PatientRepository patientRepo;
+    private DoctorRepository doctorRepo;
+
+    public AppointmentService(AppointmentRepository repo, PatientRepository patientRepo,
+                              DoctorRepository doctorRepo){
         this.repo=repo;
+        this.patientRepo=patientRepo;
+        this.doctorRepo=doctorRepo;
     }
 
     public Appointment saveAppointment(Appointment appointment){
@@ -39,6 +50,22 @@ public class AppointmentService {
 
     public void deleteAppointmentById(int id){
         repo.deleteById(id);
+    }
+
+    public Appointment saveAppointment(AppointmentDTO dto){
+
+        Patient patient = patientRepo.findById(dto.getPatientId()).orElseThrow(() ->new RuntimeException("Patient not found"));
+
+        Doctor doctor = doctorRepo.findById(dto.getDoctorId()).orElseThrow(() ->new RuntimeException("Doctor not found"));
+
+        Appointment appointment = new Appointment();
+
+        appointment.setStatus(dto.getStatus());
+        appointment.setAppointmentDate(dto.getAppointmentDate());
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+
+        return repo.save(appointment);
     }
 }
 //We are not updating the Doctor or Patient records themselves.

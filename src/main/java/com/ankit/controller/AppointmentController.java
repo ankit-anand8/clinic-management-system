@@ -1,5 +1,6 @@
 package com.ankit.controller;
 
+import com.ankit.dto.AppointmentDTO;
 import com.ankit.entity.Appointment;
 import com.ankit.service.AppointmentService;
 import jakarta.validation.Valid;
@@ -16,8 +17,8 @@ public class AppointmentController {
     }
 
     @PostMapping("/appointments")
-    public Appointment addAppointment(@Valid @RequestBody Appointment appointment){
-        return service.saveAppointment(appointment);
+    public Appointment addAppointment(@Valid @RequestBody AppointmentDTO dto){
+        return service.saveAppointment(dto);
     }
 
     @GetMapping ("/appointments")

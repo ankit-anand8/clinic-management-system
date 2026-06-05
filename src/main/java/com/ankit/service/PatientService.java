@@ -1,5 +1,6 @@
 package com.ankit.service;
 
+import com.ankit.dto.PatientDTO;
 import com.ankit.entity.Patient;
 import com.ankit.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,19 @@ public class PatientService {
         existingPatient.setAge(p.getAge());
 
         return repo.save(existingPatient);
+    }
+
+    public PatientDTO getPatientDTOById(int id){
+
+        Patient p = repo.findById(id).orElseThrow(() -> new RuntimeException("Patient not found"));
+
+        PatientDTO dto = new PatientDTO(); //Creating DTO object
+
+        dto.setId(p.getId());
+        dto.setName(p.getName());
+        dto.setEmail(p.getEmail());
+        dto.setPhone(p.getPhone());
+
+        return dto;
     }
 }

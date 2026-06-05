@@ -1,5 +1,6 @@
 package com.ankit.service;
 
+import com.ankit.dto.DoctorDTO;
 import com.ankit.entity.Doctor;
 import com.ankit.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,20 @@ public class DoctorService {
 
     public void deleteDoctorByID(int id){
         repo.deleteById(id);
+    }
+
+    public DoctorDTO getDoctorDTOByID(int id){
+
+        Doctor doc=repo.findById(id).orElseThrow(()->new RuntimeException("Doctor not found"));
+        DoctorDTO dto=new DoctorDTO();
+
+        //Copy all fields that should be returned, including ID
+        //We're not updating anything.
+        dto.setId(doc.getId());
+        dto.setName(doc.getName());
+        dto.setSpecialization(doc.getSpecialization());
+        dto.setPhone(doc.getPhone());
+
+        return dto;
     }
 }
